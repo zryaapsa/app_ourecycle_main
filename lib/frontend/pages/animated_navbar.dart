@@ -10,6 +10,8 @@ class AnimationBar extends StatefulWidget {
 class _AnimationBarState extends State<AnimationBar> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Column(children: [Text('Home Screen')]));
+    return Scaffold(
+      body: Column(children: [Text('Home Screen')]),
+    ); // Navigasi ke tampilan Home
   }
 }

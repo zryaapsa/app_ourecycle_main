@@ -1,6 +1,11 @@
-// setting_screen.dart
-import 'package:app_ourecycle_main/frontend/widgets/settings_item_widget.dart';
+// frontend/pages/setting_screen.dart
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:app_ourecycle_main/backend/config/app_route.dart';
+import 'package:app_ourecycle_main/backend/models/user_model.dart';      // <-- 1. Impor UserModel
+import 'package:app_ourecycle_main/backend/services/session_service.dart';// <-- 1. Impor SessionService
+import 'package:app_ourecycle_main/frontend/widgets/settings_item_widget.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -10,6 +15,29 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  // <-- 2. Tambahkan state untuk nama dan email
+  String _userName = 'Loading...';
+  String _userEmail = 'Loading...';
+
+  // <-- 3. Panggil fungsi load data saat halaman dibuka
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  // <-- 4. Buat fungsi untuk mengambil data dari sesi
+  Future<void> _loadUserData() async {
+    UserModel? user = await SessionService.getUser();
+    if (user != null) {
+      setState(() {
+        // Gunakan '??' untuk memberikan nilai default jika data ternyata null
+        _userName = user.name ?? 'Nama Tidak Ditemukan';
+        _userEmail = user.email ?? 'Email Tidak Ditemukan';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,32 +45,19 @@ class _SettingScreenState extends State<SettingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 40),
-              child: Text(
-                'Settings',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF079119),
-                ),
-                textAlign: TextAlign.left,
-              ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 20, 16, 40),
+              child: Text('Settings', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF079119))),
             ),
-
             Center(
               child: Column(
                 children: [
-                  Stack(
+                  const Stack(
                     children: [
                       CircleAvatar(
                         backgroundColor: Colors.grey,
                         radius: 50,
-                        child: Icon(
-                          Icons.person,
-                          size: 60,
-                          color: Colors.white,
-                        ),
+                        child: Icon(Icons.person, size: 60, color: Colors.white),
                       ),
                       Positioned(
                         bottom: 1,
@@ -55,82 +70,42 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 15),
 
+                  // <-- 5. Ganti teks statis dengan variabel state
                   Text(
-                    'Maria Antoinette',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.8),
-                    ),
+                    _userName,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-
                   const SizedBox(height: 5),
-
                   Text(
-                    'antoinette@gmail.com',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black.withOpacity(0.2),
-                    ),
+                    _userEmail,
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
 
                   const SizedBox(height: 20),
-
                   ElevatedButton(
-                    onPressed: () {
-                      // Aksi untuk mengedit profil
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF079119),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      backgroundColor: const Color(0xFF079119),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: const Text(
-                      'Edit Profile',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
+                    child: const Text('Edit Profile', style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
-
                   const SizedBox(height: 10),
-
-                  Divider(
-                    color: Colors.grey.withOpacity(0.5),
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
+                  const Divider(color: Colors.grey, thickness: 1, indent: 20, endIndent: 20),
                   const SizedBox(height: 10),
                 ],
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SettingsItemWidget(
-                    icon: Icons.lock,
-                    title: 'Ganti Password',
-                    onTap: () {
-                      // Navigasi ke halaman ganti password
-                    },
-                  ),
-                  SettingsItemWidget(
-                    icon: Icons.language,
-                    title: 'Bahasa',
-                    onTap: () {
-                      // Pilihan bahasa
-                    },
-                  ),
+                  SettingsItemWidget(icon: Icons.lock, title: 'Ganti Password', onTap: () {}),
+                  SettingsItemWidget(icon: Icons.language, title: 'Bahasa', onTap: () {}),
                   SettingsItemWidget(
                     icon: Icons.logout,
                     title: 'Logout',
@@ -138,29 +113,24 @@ class _SettingScreenState extends State<SettingScreen> {
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder:
-                            (_) => AlertDialog(
-                              title: const Text('Konfirmasi Logout'),
-                              content: const Text(
-                                'Apakah Anda yakin ingin keluar?',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('Batal'),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    // Proses logout
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Logout'),
-                                ),
-                              ],
+                        builder: (_) => AlertDialog(
+                          title: const Text('Konfirmasi Logout'),
+                          content: const Text('Apakah Anda yakin ingin keluar?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Batal'),
                             ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                              onPressed: () async {
+                                await SessionService.clearUser();
+                                Get.offAllNamed(AppRoute.login.name);
+                              },
+                              child: const Text('Logout', style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

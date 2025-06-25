@@ -4,7 +4,6 @@ import 'package:app_ourecycle_main/frontend/pages/animated_navbar.dart';
 import 'package:app_ourecycle_main/frontend/pages/register_screen.dart';
 import 'package:app_ourecycle_main/frontend/widgets/text_field_login.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -32,7 +31,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5), // Warna latar belakang
+      backgroundColor: const Color(
+        0xFFF5F5F5,
+      ), // Warna latar belakang putih keren
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

@@ -14,11 +14,7 @@ class AnimationBar extends StatefulWidget {
 class _AnimationBarState extends State<AnimationBar> {
   int _currentIndex = 0;
 
-<<<<<<< HEAD
-  // List pages untuk navigasi
-=======
   // List of pages
->>>>>>> feature/animated_navbar
   final List<Widget> _pages = const [
     HomeScreen(),
     TransaksiScreen(),

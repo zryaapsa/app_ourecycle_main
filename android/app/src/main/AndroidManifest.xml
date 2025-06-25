@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Akses Internet -->
+<uses-permission android:name="android.permission.INTERNET" />
+<!-- Izin status jaringan (wifi, data, dll)-->
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:label="app_ourecycle_main"
         android:name="${applicationName}"

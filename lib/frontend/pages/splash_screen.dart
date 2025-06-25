@@ -206,7 +206,7 @@ class SplashScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        padding: EdgeInsets.zero, // hilangkan padding default
+                        padding: EdgeInsets.zero, // hilangkan padding
                       ),
                       child: Container(
                         width: double.infinity,

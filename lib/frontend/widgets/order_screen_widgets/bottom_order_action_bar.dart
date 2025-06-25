@@ -1,13 +1,23 @@
+// ! order_screen.dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:app_ourecycle_main/frontend/pages/order_detail_dropoff_screen.dart';
 import 'package:app_ourecycle_main/frontend/pages/order_detail_pickoff_screen.dart';
 import 'package:app_ourecycle_main/frontend/pages/order_screen.dart';
-import 'package:flutter/material.dart';
-
 
 class BottomOrderActionBar extends StatelessWidget {
   final OrderCategory? selectedCategory;
+  
+  // Parameter untuk menerima data dinamis
+  final String wasteCategoryName;
+  final double pricePerKg;
 
-  const BottomOrderActionBar({super.key, required this.selectedCategory});
+  const BottomOrderActionBar({
+    super.key,
+    required this.selectedCategory,
+    required this.wasteCategoryName,
+    required this.pricePerKg,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +44,10 @@ class BottomOrderActionBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // Menampilkan harga secara dinamis
           Text(
-            "Rp2.000/Kg",
-            style: TextStyle(
+            "Rp${pricePerKg.toStringAsFixed(0)}/Kg",
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black87,
@@ -44,28 +55,25 @@ class BottomOrderActionBar extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (selectedCategory == OrderCategory.pickOff) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OrderDetailPickOffScreen(),
-                  ),
-                );
-              } else if (selectedCategory == OrderCategory.dropOff) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OrderDetailDropOffScreen(),
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Silakan pilih kategori terlebih dahulu."),
-                  ),
-                );
+              if (selectedCategory == null) {
+                Get.snackbar('Peringatan', 'Silakan pilih kategori PickOff atau DropOff terlebih dahulu.');
+                return;
               }
-              print("Detail Order Ditekan! Kategori: $selectedCategory");
+
+              if (selectedCategory == OrderCategory.pickOff) {
+                Get.to(() => OrderDetailPickOffScreen(
+                      wasteCategoryName: wasteCategoryName,
+                      pricePerKg: pricePerKg,
+                    ));
+              } else if (selectedCategory == OrderCategory.dropOff) {
+                // ================== PERBAIKAN DI SINI ==================
+                // Aktifkan pengiriman data untuk alur DropOff juga
+                Get.to(() => OrderDetailDropOffScreen(
+                      wasteCategoryName: wasteCategoryName,
+                      pricePerKg: pricePerKg,
+                    ));
+                // =======================================================
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green.shade600,

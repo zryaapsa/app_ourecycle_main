@@ -21,7 +21,7 @@ class Appwrite {
         .setEndpoint(endpoint)
         .setProject(projectId);
 
-    account = Account(client);
+    account = Account(client); 
     databases = Databases(client);
     storage = Storage(client);
   }

@@ -1,20 +1,22 @@
-import 'package:app_ourecycle_main/frontend/widgets/order_screen_widgets/bottom_order_action_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:app_ourecycle_main/backend/models/waste_category_model.dart';
 import 'package:app_ourecycle_main/frontend/widgets/order_screen_widgets/order_header_and_image.dart';
 import 'package:app_ourecycle_main/frontend/widgets/order_screen_widgets/product_info_section.dart';
-import 'package:flutter/material.dart';
-
+import 'package:app_ourecycle_main/frontend/widgets/order_screen_widgets/bottom_order_action_bar.dart';
 
 enum OrderCategory { pickOff, dropOff }
 
 class OrderScreen extends StatefulWidget {
-  const OrderScreen({super.key});
+  // Tambahkan parameter untuk menerima data kategori
+  final WasteCategoryModel category;
+  const OrderScreen({super.key, required this.category});
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  OrderCategory? _selectedCategory = OrderCategory.pickOff; // Kategori default
+  OrderCategory? _selectedCategory = OrderCategory.pickOff;
 
   void _onCategoryChanged(OrderCategory? value) {
     setState(() {
@@ -30,17 +32,23 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const OrderHeaderAndImage(), // Menggunakan widget yang sudah dipisah
-            const SizedBox(height: 80 + 20.0), // Jarak dari gambar
+            // Kirim imageId ke header
+            OrderHeaderAndImage(imageId: widget.category.imageId),
+            const SizedBox(height: 80 + 20.0),
+            // Kirim seluruh objek kategori ke ProductInfoSection
             ProductInfoSection(
+              category: widget.category,
               selectedCategory: _selectedCategory,
               onCategoryChanged: _onCategoryChanged,
             ),
           ],
         ),
       ),
+      // Kirim data yang relevan ke BottomOrderActionBar
       bottomNavigationBar: BottomOrderActionBar(
         selectedCategory: _selectedCategory,
+        wasteCategoryName: widget.category.name,
+        pricePerKg: widget.category.pricePerKg ?? 0.0,
       ),
     );
   }

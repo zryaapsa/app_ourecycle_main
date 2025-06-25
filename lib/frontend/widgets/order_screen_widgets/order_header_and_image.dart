@@ -1,8 +1,16 @@
+// ! order_screen.dart
 import 'package:flutter/material.dart';
-import 'wave_header_clipper.dart'; // Import clipper lokal
+import 'package:app_ourecycle_main/backend/config/appwrite.dart'; // Impor Appwrite
+import 'wave_header_clipper.dart';
 
 class OrderHeaderAndImage extends StatelessWidget {
-  const OrderHeaderAndImage({super.key});
+  // Tambahkan parameter untuk imageId
+  final String? imageId;
+
+  const OrderHeaderAndImage({
+    super.key,
+    this.imageId, // Jadikan opsional
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +42,7 @@ class OrderHeaderAndImage extends StatelessWidget {
                         ],
                       ),
                       child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.green.shade600,
-                          size: 24,
-                        ),
+                        icon: Icon(Icons.arrow_back, color: Colors.green.shade600, size: 24),
                         onPressed: () {
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
@@ -47,18 +51,11 @@ class OrderHeaderAndImage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Text(
-                        "Order Menu",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      padding: EdgeInsets.only(top: 16.0),
+                      child: Text("Order Menu", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -73,10 +70,6 @@ class OrderHeaderAndImage extends StatelessWidget {
             height: 160,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
-              image: const DecorationImage(
-                image: AssetImage('assets/plastic-bottles.jpg'), // Pastikan aset ini ada
-                fit: BoxFit.cover,
-              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.25),
@@ -85,6 +78,14 @@ class OrderHeaderAndImage extends StatelessWidget {
                   offset: const Offset(0, 5),
                 ),
               ],
+              // Ganti gambar statis menjadi dinamis
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                // Gunakan gambar dari Appwrite jika ada, jika tidak, gunakan gambar default
+                image: (imageId != null && imageId!.isNotEmpty)
+                    ? NetworkImage(Appwrite.getImageUrl(imageId!))
+                    : const AssetImage('assets/plastic-bottles.jpg') as ImageProvider,
+              ),
             ),
           ),
         ),

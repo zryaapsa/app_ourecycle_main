@@ -33,7 +33,7 @@ class LoginController extends GetxController {
 
     result.fold(
       (errorMessage) {
-        // Gagal, tampilkan pesan error
+        // Gagal, tampilkan pesan error penting
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red,
           content: Text(errorMessage),

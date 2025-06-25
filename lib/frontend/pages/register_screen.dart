@@ -19,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _togglePasswordVisibility() {
     setState(() {
-      _obscurePassword = !_obscurePassword;
+      _obscurePassword = !_obscurePassword; // Fitur untuk menampilkan password
     });
   }
 

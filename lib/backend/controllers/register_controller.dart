@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:app_ourecycle_main/backend/datasources/user_datasource.dart';
 
 class RegisterController extends GetxController {
-  // Controllers untuk text fields
+  // Controllers untuk text fields register
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();

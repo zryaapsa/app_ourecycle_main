@@ -14,6 +14,7 @@ class AnimationBar extends StatefulWidget {
 class _AnimationBarState extends State<AnimationBar> {
   int _currentIndex = 0;
 
+  // List of pages
   final List<Widget> _pages = const [
     HomeScreen(),
     TransaksiScreen(),

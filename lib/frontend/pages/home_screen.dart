@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Row(
                 children: [
-                  ClipRRect(borderRadius: BorderRadius.circular(8.0), child: Image.asset('assets/ourecycle.png', height: 100, fit: BoxFit.cover)),
+                  ClipRRect(borderRadius: BorderRadius.circular(8.0), child: Image.asset('assets/plastic-bottles.jpg', height: 100, fit: BoxFit.cover)),
                   const SizedBox(width: 16),
                   const Expanded(
                     child: Column(

@@ -7,7 +7,6 @@ import 'package:app_ourecycle_main/frontend/widgets/order_screen_widgets/bottom_
 enum OrderCategory { pickOff, dropOff }
 
 class OrderScreen extends StatefulWidget {
-  // Tambahkan parameter untuk menerima data kategori
   final WasteCategoryModel category;
   const OrderScreen({super.key, required this.category});
 
@@ -17,6 +16,22 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   OrderCategory? _selectedCategory = OrderCategory.pickOff;
+
+  // --- FUNGSI BARU DITAMBAHKAN DI SINI ---
+  IconData _getIconForCategory(String? categoryName) {
+    switch (categoryName?.toLowerCase()) {
+      case 'plastik':
+        return Icons.local_drink;
+      case 'kertas':
+        return Icons.article;
+      case 'kaca':
+        return Icons.wine_bar;
+      case 'logam':
+        return Icons.build;
+      default:
+        return Icons.delete_outline;
+    }
+  }
 
   void _onCategoryChanged(OrderCategory? value) {
     setState(() {
@@ -32,23 +47,24 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Kirim imageId ke header
             OrderHeaderAndImage(imageId: widget.category.imageId),
             const SizedBox(height: 80 + 20.0),
-            // Kirim seluruh objek kategori ke ProductInfoSection
             ProductInfoSection(
               category: widget.category,
               selectedCategory: _selectedCategory,
               onCategoryChanged: _onCategoryChanged,
+              // --- KIRIM DATA IKON KE PRODUCT INFO SECTION ---
+              categoryIcon: _getIconForCategory(widget.category.name),
             ),
           ],
         ),
       ),
-      // Kirim data yang relevan ke BottomOrderActionBar
       bottomNavigationBar: BottomOrderActionBar(
         selectedCategory: _selectedCategory,
         wasteCategoryName: widget.category.name,
         pricePerKg: widget.category.pricePerKg ?? 0.0,
+        imageId: widget.category.imageId ?? '',
+        info: widget.category.info,
       ),
     );
   }

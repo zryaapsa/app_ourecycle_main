@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project_ourecycle/backend/config/app_route.dart';
-import 'package:project_ourecycle/backend/controllers/setting_controller.dart';
-import 'package:project_ourecycle/backend/services/session_service.dart';
-import 'package:project_ourecycle/frontend/pages/edit_profile_screen.dart';
-import 'package:project_ourecycle/frontend/widgets/settings_item_widget.dart';
-import 'package:project_ourecycle/frontend/pages/setting/kebijakan_privasi_screen.dart';
-import 'package:project_ourecycle/frontend/pages/setting/panduan_screen.dart';
-import 'package:project_ourecycle/frontend/pages/setting/pertanyaan_umum_screen.dart';
-import 'package:project_ourecycle/frontend/pages/setting/syarat_dan_ketentuan_screen.dart';
+import 'package:app_ourecycle_main/backend/config/app_route.dart';
+import 'package:app_ourecycle_main/backend/controllers/setting_controller.dart';
+import 'package:app_ourecycle_main/backend/services/session_service.dart';
+import 'package:app_ourecycle_main/frontend/pages/setting/edit_profile_screen.dart';
+import 'package:app_ourecycle_main/frontend/widgets/settings_item_widget.dart';
+import 'package:app_ourecycle_main/frontend/pages/setting/kebijakan_privasi_screen.dart';
+import 'package:app_ourecycle_main/frontend/pages/setting/panduan_screen.dart';
+import 'package:app_ourecycle_main/frontend/pages/setting/pertanyaan_umum_screen.dart';
+import 'package:app_ourecycle_main/frontend/pages/setting/syarat_dan_ketentuan_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});

@@ -1,3 +1,4 @@
+// ! D
 import 'package:flutter/material.dart';
 
 class TextFieldLogin extends StatelessWidget {
@@ -7,16 +8,18 @@ class TextFieldLogin extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? suffixIcon;
   final IconData? prefixIcon;
+  final Color? cursorColor;
 
   const TextFieldLogin({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.suffixIcon,
     this.prefixIcon,
-  }) : super(key: key);
+    this.cursorColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class TextFieldLogin extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      cursorColor: cursorColor,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,

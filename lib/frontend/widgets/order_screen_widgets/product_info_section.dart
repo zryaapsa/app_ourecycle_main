@@ -1,4 +1,3 @@
-// ! order_screen.dart
 import 'package:flutter/material.dart';
 import 'package:app_ourecycle_main/backend/models/waste_category_model.dart';
 import 'package:app_ourecycle_main/frontend/pages/order_screen.dart';
@@ -6,14 +5,15 @@ import 'package:app_ourecycle_main/frontend/pages/order_screen.dart';
 class ProductInfoSection extends StatelessWidget {
   final OrderCategory? selectedCategory;
   final ValueChanged<OrderCategory?> onCategoryChanged;
-  // Tambahkan parameter baru untuk menerima data kategori
   final WasteCategoryModel category;
+  final IconData categoryIcon;
 
   const ProductInfoSection({
     super.key,
     required this.selectedCategory,
     required this.onCategoryChanged,
     required this.category,
+    required this.categoryIcon,
   });
 
   @override
@@ -23,34 +23,77 @@ class ProductInfoSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // --- PERBAIKAN 1: Judul kembali ke tengah tanpa ikon ---
           Center(
-            // Gunakan data dinamis
-            child: Text(category.name, style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+            child: Text(
+              category.name,
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade800,
+              ),
+            ),
           ),
           const SizedBox(height: 8),
           Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.eco, color: Colors.green, size: 20),
+                // --- PERBAIKAN 2: Ikon dinamis ditempatkan di sini ---
+                Icon(categoryIcon, color: Colors.green, size: 20),
                 const SizedBox(width: 8),
-                // Gunakan data dinamis
-                Text(category.info ?? '', style: TextStyle(fontSize: 16, color: Colors.green.shade700, fontWeight: FontWeight.w500)),
+                Text(
+                  category.info ?? '',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green.shade700,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 24),
-          Text("About", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+          Text(
+            "About",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade800,
+            ),
+          ),
           const SizedBox(height: 8),
-          // Teks 'About' bisa juga dibuat dinamis dengan menambahkan atribut baru di Appwrite
-          const Text("Sampah plastik merupakan salah satu jenis sampah yang memberikan ancaman serius terhadap lingkungan...", textAlign: TextAlign.justify),
+          const Text(
+            "Sampah plastik merupakan salah satu jenis sampah yang memberikan ancaman serius terhadap lingkungan...",
+            textAlign: TextAlign.justify,
+          ),
           const SizedBox(height: 24),
-          Text("Harga Per KG", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+          Text(
+            "Harga Per KG",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade800,
+            ),
+          ),
           const SizedBox(height: 4),
-          // Gunakan data dinamis
-          Text("Rp${category.pricePerKg?.toStringAsFixed(0) ?? '0'}/Kg", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green.shade700)),
+          Text(
+            "Rp${category.pricePerKg?.toStringAsFixed(0) ?? '0'}/Kg",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.green.shade700,
+            ),
+          ),
           const SizedBox(height: 24),
-          Text("Pilih Kategori", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+          Text(
+            "Pilih Kategori",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade800,
+            ),
+          ),
           const SizedBox(height: 8),
           _buildCategoryRadio(OrderCategory.pickOff, "PickOff"),
           _buildCategoryRadio(OrderCategory.dropOff, "DropOff"),

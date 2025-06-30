@@ -16,7 +16,6 @@ class WasteDatasource {
       return result.documents
           .map((doc) => WasteCategoryModel.fromJson(doc.data))
           .toList();
-
     } on AppwriteException catch (e) {
       print("Error fetching waste categories: ${e.message}");
       return []; // Kembalikan list kosong jika error

@@ -40,6 +40,7 @@ class WeightSelectorWidget extends StatelessWidget {
                               ? Colors.green.shade600
                               : Colors.green.shade400,
                       shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1),
                       boxShadow:
                           isSelected
                               ? [

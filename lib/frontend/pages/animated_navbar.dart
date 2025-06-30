@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:app_ourecycle_main/frontend/pages/home_screen.dart';
-import 'package:app_ourecycle_main/frontend/pages/setting_screen.dart';
 import 'package:app_ourecycle_main/frontend/pages/transaksi_screen.dart';
-
+import 'package:app_ourecycle_main/frontend/pages/setting/setting_screen.dart';
+import 'package:app_ourecycle_main/frontend/pages/home_screen.dart';
 
 class AnimationBar extends StatefulWidget {
   const AnimationBar({super.key});
@@ -14,7 +13,6 @@ class AnimationBar extends StatefulWidget {
 class _AnimationBarState extends State<AnimationBar> {
   int _currentIndex = 0;
 
-  // List of pages
   final List<Widget> _pages = const [
     HomeScreen(),
     TransaksiScreen(),

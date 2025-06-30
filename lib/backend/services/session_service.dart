@@ -41,7 +41,7 @@ class SessionService {
     } catch (e) {
       print("Gagal menghapus sesi di Appwrite: $e");
     }
-    
+
     // Hapus data dari local storage
     await prefs.remove(_userSessionKey);
   }

@@ -3,15 +3,12 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app_ourecycle_main/backend/config/appwrite.dart';
-import 'package:app_ourecycle_main/backend/models/order_model.dart';   // <-- Impor OrderModel
-import 'package:app_ourecycle_main/backend/models/user_model.dart';   // <-- Impor UserModel
-import 'package:app_ourecycle_main/backend/services/session_service.dart'; // <-- Impor SessionService
+import 'package:app_ourecycle_main/backend/models/order_model.dart';
+import 'package:app_ourecycle_main/backend/models/user_model.dart';
+import 'package:app_ourecycle_main/backend/services/session_service.dart';
 
 class OrderDatasource {
-  
-  // Fungsi createOrder dari sebelumnya...
   static Future<Either<String, void>> createOrder({
-    //... (isi fungsi ini tidak berubah)
     required String userId,
     required String userName,
     required String wasteCategoryName,
@@ -22,15 +19,22 @@ class OrderDatasource {
     required DateTime scheduledAt,
     required double totalPrice,
     required double taxAmount,
-    String? photoId,
+    List<String>? photoIds,
   }) async {
     try {
       final Map<String, dynamic> dataToSend = {
-        'userId': userId, 'userName': userName, 'wasteCategoryName': wasteCategoryName,
-        'weight': weight, 'orderType': orderType, 'address': address,
-        'phoneNumber': phoneNumber, 'scheduledAt': scheduledAt.toIso8601String(),
-        'totalPrice': totalPrice, 'taxAmount': taxAmount, 'status': 'in-progress',
-        'photoId': photoId,
+        'userId': userId,
+        'userName': userName,
+        'wasteCategoryName': wasteCategoryName,
+        'weight': weight,
+        'orderType': orderType,
+        'address': address,
+        'phoneNumber': phoneNumber,
+        'scheduledAt': scheduledAt.toIso8601String(),
+        'totalPrice': totalPrice,
+        'taxAmount': taxAmount,
+        'status': 'in-progress',
+        'photoIds': photoIds,
       };
       await Appwrite.databases.createDocument(
         databaseId: Appwrite.databaseId,
@@ -46,35 +50,49 @@ class OrderDatasource {
     }
   }
 
-
-  // =================== FUNGSI BARU DI SINI ===================
   static Future<Either<String, List<OrderModel>>> getOrders() async {
     try {
-      // 1. Dapatkan dulu ID pengguna yang sedang login
       UserModel? currentUser = await SessionService.getUser();
       if (currentUser == null || currentUser.id == null) {
-        return const Left('Gagal mendapatkan data pengguna. Silakan login ulang.');
+        return const Left(
+          'Gagal mendapatkan data pengguna. Silakan login ulang.',
+        );
       }
 
-      // 2. Ambil dokumen dari collection 'Orders'
       final result = await Appwrite.databases.listDocuments(
         databaseId: Appwrite.databaseId,
         collectionId: Appwrite.collectionOrders,
-        // 3. Gunakan Query untuk memfilter: hanya ambil pesanan dengan userId yang cocok
         queries: [
-          Query.equal('userId', [currentUser.id!])
+          Query.equal('userId', [currentUser.id!]),
         ],
       );
 
-      // 4. Ubah setiap dokumen menjadi objek OrderModel dan kembalikan sebagai list
-      List<OrderModel> orders = result.documents
-          .map((doc) => OrderModel.fromJson(doc.data))
-          .toList();
-      
-      return Right(orders);
+      List<OrderModel> orders =
+          result.documents.map((doc) => OrderModel.fromJson(doc.data)).toList();
 
+      return Right(orders);
     } on AppwriteException catch (e) {
       return Left(e.message ?? 'Gagal mengambil riwayat pesanan.');
+    } catch (e) {
+      return Left('Terjadi kesalahan tidak diketahui: $e');
+    }
+  }
+
+  // --- FUNGSI BARU UNTUK UPDATE STATUS ---
+  static Future<Either<String, void>> updateOrderStatus(
+    String orderId,
+    String newStatus,
+  ) async {
+    try {
+      await Appwrite.databases.updateDocument(
+        databaseId: Appwrite.databaseId,
+        collectionId: Appwrite.collectionOrders,
+        documentId: orderId,
+        data: {'status': newStatus},
+      );
+      return const Right(null);
+    } on AppwriteException catch (e) {
+      return Left(e.message ?? 'Gagal memperbarui status pesanan.');
     } catch (e) {
       return Left('Terjadi kesalahan tidak diketahui: $e');
     }

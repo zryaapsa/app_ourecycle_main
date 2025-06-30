@@ -1,18 +1,21 @@
-// main.dart (Versi Final)
-
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_ourecycle_main/backend/config/app_route.dart'; // <-- 1. Impor Rute
-import 'package:app_ourecycle_main/backend/services/session_service.dart'; // <-- 2. Impor Session Service
+import 'package:app_ourecycle_main/backend/config/app_route.dart';
+import 'package:app_ourecycle_main/backend/services/session_service.dart';
 import 'package:app_ourecycle_main/frontend/pages/animated_navbar.dart';
 import 'package:app_ourecycle_main/frontend/pages/login_screen.dart';
 import 'package:app_ourecycle_main/frontend/pages/register_screen.dart';
-
 import 'package:app_ourecycle_main/backend/config/appwrite.dart';
+import 'package:app_ourecycle_main/frontend/pages/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  
+  await dotenv.load(fileName: ".env");
+
   Appwrite.init();
   
   runApp(const MyApp());
@@ -23,42 +26,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
       logWriterCallback: (String text, {bool isError = false}) {
         print("GETX LOG: $text");
       },
-      
-      // <-- 3. Gunakan initialRoute, kita mulai dari 'splash' untuk pengecekan
       initialRoute: AppRoute.splash.name,
-      
-
-      // <-- 4. Definisikan semua halaman di sini
       routes: {
-        // Rute 'splash' ini adalah gerbang utama aplikasi
         AppRoute.splash.name: (context) {
           return FutureBuilder(
-            future: SessionService.getUser(), // Memeriksa sesi login
+            future: SessionService.getUser(),
             builder: (context, snapshot) {
-              // Saat sedang loading, tampilkan spinner
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
               }
-              // Jika ada data (user sudah login), arahkan ke dashboard
               if (snapshot.hasData && snapshot.data != null) {
-                return const AnimationBar(); // Halaman utama Anda
+                return const AnimationBar();
               }
-              // Jika tidak ada data (user belum login), arahkan ke halaman login
-              return const LoginScreen();
+              return const SplashScreen(); 
             },
           );
         },
-        // Definisikan rute lainnya
         AppRoute.login.name: (context) => const LoginScreen(),
         AppRoute.register.name: (context) => const RegisterScreen(),
         AppRoute.dashboard.name: (context) => const AnimationBar(),

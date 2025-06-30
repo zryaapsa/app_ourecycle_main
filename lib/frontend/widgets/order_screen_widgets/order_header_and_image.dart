@@ -1,4 +1,3 @@
-// ! order_screen.dart
 import 'package:flutter/material.dart';
 import 'package:app_ourecycle_main/backend/config/appwrite.dart'; // Impor Appwrite
 import 'wave_header_clipper.dart';
@@ -42,8 +41,13 @@ class OrderHeaderAndImage extends StatelessWidget {
                         ],
                       ),
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.green.shade600, size: 24),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.green.shade600,
+                          size: 24,
+                        ),
                         onPressed: () {
+                          // Menggunakan GetX untuk navigasi kembali lebih konsisten
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
                           }
@@ -55,7 +59,14 @@ class OrderHeaderAndImage extends StatelessWidget {
                     alignment: Alignment.topCenter,
                     child: Padding(
                       padding: EdgeInsets.only(top: 16.0),
-                      child: Text("Order Menu", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                      child: Text(
+                        "Order Menu",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -78,13 +89,19 @@ class OrderHeaderAndImage extends StatelessWidget {
                   offset: const Offset(0, 5),
                 ),
               ],
-              // Ganti gambar statis menjadi dinamis
               image: DecorationImage(
                 fit: BoxFit.cover,
-                // Gunakan gambar dari Appwrite jika ada, jika tidak, gunakan gambar default
-                image: (imageId != null && imageId!.isNotEmpty)
-                    ? NetworkImage(Appwrite.getImageUrl(imageId!))
-                    : const AssetImage('assets/plastic-bottles.jpg') as ImageProvider,
+                image:
+                    (imageId != null && imageId!.isNotEmpty)
+                        ? NetworkImage(
+                          // <-- PERBAIKAN DI SINI: Tambahkan Appwrite.bucketImagesTrash
+                          Appwrite.getImageUrl(
+                            Appwrite.bucketImagesTrash,
+                            imageId!,
+                          ),
+                        )
+                        : const AssetImage('assets/plastic-bottles.jpg')
+                            as ImageProvider,
               ),
             ),
           ),

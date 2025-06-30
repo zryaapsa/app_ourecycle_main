@@ -9,6 +9,7 @@ class CustomFormField extends StatelessWidget {
   final VoidCallback? onTapIcon;
   final bool readOnly;
   final IconData? suffixIcon; // Tambahkan jika ingin ada ikon di kanan
+  final Color? cursorColor; // Jadikan opsional dan nullable
 
   const CustomFormField({
     super.key,
@@ -20,6 +21,7 @@ class CustomFormField extends StatelessWidget {
     this.onTapIcon,
     this.readOnly = false,
     this.suffixIcon,
+    this.cursorColor, // opsional
   });
 
   @override
@@ -40,9 +42,11 @@ class CustomFormField extends StatelessWidget {
         ],
         TextFormField(
           controller: controller,
+          style: TextStyle(fontSize: 14),
           maxLines: maxLines,
           keyboardType: keyboardType,
           readOnly: readOnly || (onTapIcon != null),
+          cursorColor: cursorColor ?? Colors.green, // Gunakan hijau jika null
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.grey.shade500),

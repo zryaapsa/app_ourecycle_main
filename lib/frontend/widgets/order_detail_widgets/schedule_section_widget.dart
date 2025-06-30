@@ -41,6 +41,7 @@ class ScheduleSectionWidget extends StatelessWidget {
           labelText: timeFieldLabel,
           hintText: timeFieldHint,
           onTapIcon: onTimeTap, // Untuk memicu time picker
+          cursorColor: Colors.green,
         ),
         const SizedBox(height: 12),
         CustomFormField(
@@ -48,6 +49,7 @@ class ScheduleSectionWidget extends StatelessWidget {
           labelText: dateFieldLabel,
           hintText: dateFieldHint,
           onTapIcon: onDateTap, // Untuk memicu date picker
+          cursorColor: Colors.green,
         ),
       ],
     );

@@ -1,4 +1,3 @@
-// ! order_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_ourecycle_main/frontend/pages/order_detail_dropoff_screen.dart';
@@ -7,16 +6,18 @@ import 'package:app_ourecycle_main/frontend/pages/order_screen.dart';
 
 class BottomOrderActionBar extends StatelessWidget {
   final OrderCategory? selectedCategory;
-  
-  // Parameter untuk menerima data dinamis
   final String wasteCategoryName;
   final double pricePerKg;
+  final String imageId;
+  final String? info;
 
   const BottomOrderActionBar({
     super.key,
     required this.selectedCategory,
     required this.wasteCategoryName,
     required this.pricePerKg,
+    required this.imageId,
+    required this.info,
   });
 
   @override
@@ -44,7 +45,6 @@ class BottomOrderActionBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Menampilkan harga secara dinamis
           Text(
             "Rp${pricePerKg.toStringAsFixed(0)}/Kg",
             style: const TextStyle(
@@ -56,23 +56,31 @@ class BottomOrderActionBar extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               if (selectedCategory == null) {
-                Get.snackbar('Peringatan', 'Silakan pilih kategori PickOff atau DropOff terlebih dahulu.');
+                Get.snackbar(
+                  'Peringatan',
+                  'Silakan pilih kategori PickOff atau DropOff terlebih dahulu.',
+                );
                 return;
               }
 
               if (selectedCategory == OrderCategory.pickOff) {
-                Get.to(() => OrderDetailPickOffScreen(
-                      wasteCategoryName: wasteCategoryName,
-                      pricePerKg: pricePerKg,
-                    ));
+                Get.to(
+                  () => OrderDetailPickOffScreen(
+                    wasteCategoryName: wasteCategoryName,
+                    pricePerKg: pricePerKg,
+                    imageId: imageId,
+                    info: info,
+                  ),
+                );
               } else if (selectedCategory == OrderCategory.dropOff) {
-                // ================== PERBAIKAN DI SINI ==================
-                // Aktifkan pengiriman data untuk alur DropOff juga
-                Get.to(() => OrderDetailDropOffScreen(
-                      wasteCategoryName: wasteCategoryName,
-                      pricePerKg: pricePerKg,
-                    ));
-                // =======================================================
+                Get.to(
+                  () => OrderDetailDropOffScreen(
+                    wasteCategoryName: wasteCategoryName,
+                    pricePerKg: pricePerKg,
+                    imageId: imageId,
+                    info: info,
+                  ),
+                );
               }
             },
             style: ElevatedButton.styleFrom(

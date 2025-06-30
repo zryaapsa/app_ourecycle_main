@@ -1,12 +1,10 @@
-// backend/datasources/user_datasource.dart
-
 import 'package:appwrite/appwrite.dart';
 import 'package:dartz/dartz.dart';
 import 'package:app_ourecycle_main/backend/config/appwrite.dart';
 import 'package:app_ourecycle_main/backend/models/user_model.dart';
 
 class UserDatasource {
-  // --- SIGN UP ---
+  // ... (fungsi signUp dan signIn Anda tidak berubah)
   static Future<Either<String, UserModel>> signUp({
     required String name,
     required String email,
@@ -34,14 +32,10 @@ class UserDatasource {
         },
       );
 
-      // === PERBAIKAN DI SINI ===
-      // Tambahkan $id ke dalam map sebelum di-parse
       final data = document.data;
       data['\$id'] = document.$id;
       return Right(UserModel.fromJson(data));
-
     } on AppwriteException catch (e) {
-      // ... (error handling tidak berubah)
       String message = 'Terjadi kesalahan, silakan coba lagi.';
       if (e.type == 'user_already_exists' || e.code == 409) {
         message = 'Email sudah terdaftar.';
@@ -54,7 +48,6 @@ class UserDatasource {
     }
   }
 
-  // --- SIGN IN ---
   static Future<Either<String, UserModel>> signIn({
     required String email,
     required String password,
@@ -70,15 +63,11 @@ class UserDatasource {
         collectionId: Appwrite.collectionUsers,
         documentId: session.userId,
       );
-      
-      // === PERBAIKAN DI SINI ===
-      // Tambahkan $id ke dalam map sebelum di-parse
+
       final data = document.data;
       data['\$id'] = document.$id;
       return Right(UserModel.fromJson(data));
-
     } on AppwriteException catch (e) {
-      // ... (error handling tidak berubah)
       String message = 'Terjadi kesalahan, silakan coba lagi.';
       if (e.type == 'user_invalid_credentials' || e.code == 401) {
         message = 'Email atau password salah.';
@@ -89,5 +78,33 @@ class UserDatasource {
     } catch (e) {
       return Left('Terjadi kesalahan yang tidak diketahui: $e');
     }
+  }
+
+  // --- FUNGSI BARU UNTUK MENGAMBIL PROFIL ---
+  static Future<Map<String, dynamic>> getUserProfile(String userId) async {
+    final doc = await Appwrite.databases.getDocument(
+      databaseId: Appwrite.databaseId,
+      collectionId: Appwrite.collectionUsers,
+      documentId: userId,
+    );
+    return doc.data;
+  }
+
+  // --- FUNGSI BARU UNTUK UPDATE PROFIL ---
+  static Future<void> updateUserProfile({
+    required String userId,
+    required String name,
+    required String phone,
+    required String address,
+  }) async {
+    // Update nama di sistem Auth Appwrite
+    await Appwrite.account.updateName(name: name);
+    // Update data di database Users
+    await Appwrite.databases.updateDocument(
+      databaseId: Appwrite.databaseId,
+      collectionId: Appwrite.collectionUsers,
+      documentId: userId,
+      data: {'name': name, 'phone': phone, 'address': address},
+    );
   }
 }

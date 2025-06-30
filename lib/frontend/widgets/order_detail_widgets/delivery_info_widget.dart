@@ -36,6 +36,7 @@ class DeliveryInfoWidget extends StatelessWidget {
           labelText: phoneLabel,
           hintText: phoneHint,
           keyboardType: TextInputType.phone,
+          cursorColor: Colors.green,
         ),
         const SizedBox(height: 12),
         CustomFormField(
@@ -43,6 +44,7 @@ class DeliveryInfoWidget extends StatelessWidget {
           labelText: addressLabel,
           hintText: addressHint,
           maxLines: 3,
+          cursorColor: Colors.green,
         ),
       ],
     );

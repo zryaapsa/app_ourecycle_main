@@ -1,3 +1,4 @@
+// ! D
 import 'package:flutter/material.dart';
 
 class TextFieldRegister extends StatelessWidget {
@@ -7,6 +8,7 @@ class TextFieldRegister extends StatelessWidget {
   final bool obscureText;
   final IconData? prefixIcon;
   final Widget? suffixIcon;
+  final Color? cursorColor;
 
   const TextFieldRegister({
     super.key,
@@ -16,6 +18,7 @@ class TextFieldRegister extends StatelessWidget {
     this.obscureText = false,
     this.prefixIcon,
     this.suffixIcon,
+    this.cursorColor,
   });
 
   @override
@@ -24,11 +27,15 @@ class TextFieldRegister extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      cursorColor: cursorColor,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 16,
+          horizontal: 20,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
@@ -41,9 +48,8 @@ class TextFieldRegister extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
         ),
-        prefixIcon: prefixIcon != null
-            ? Icon(prefixIcon, color: Colors.grey)
-            : null,
+        prefixIcon:
+            prefixIcon != null ? Icon(prefixIcon, color: Colors.grey) : null,
         suffixIcon: suffixIcon,
       ),
     );

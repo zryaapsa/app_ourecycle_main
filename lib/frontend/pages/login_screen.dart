@@ -1,5 +1,3 @@
-// frontend/pages/login_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_ourecycle_main/backend/config/app_route.dart';
@@ -14,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Inisialisasi controller menggunakan GetX
   final controller = Get.put(LoginController());
   bool _obscurePassword = true;
 
@@ -27,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5), // Warna latar belakang putih
+      backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -53,17 +50,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 32),
 
                 TextFieldLogin(
-                  controller:
-                      controller.emailController, // Hubungkan controller
+                  controller: controller.emailController,
                   hintText: 'Email',
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Icons.email_outlined,
+                  cursorColor: Colors.green,
                 ),
                 const SizedBox(height: 16),
 
                 TextFieldLogin(
-                  controller:
-                      controller.passwordController, // Hubungkan controller
+                  controller: controller.passwordController,
                   hintText: 'Password',
                   obscureText: _obscurePassword,
                   prefixIcon: Icons.lock_outline,
@@ -75,15 +71,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: _togglePasswordVisibility,
                   ),
+                  cursorColor: Colors.green,
                 ),
-                const SizedBox(height: 24),
+
+                // --- TOMBOL LUPA PASSWORD BARU ---
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: GestureDetector(
+                      onTap: () => controller.showForgotPasswordDialog(context),
+                      child: const Text(
+                        'Lupa Password?',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
 
                 Obx(() {
                   return SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed:
-                          controller.isLoading
+                          controller.isLoading.value
                               ? null
                               : () => controller.execute(context),
                       style: ElevatedButton.styleFrom(
@@ -94,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
                       child:
-                          controller.isLoading
+                          controller.isLoading.value
                               ? const SizedBox(
                                 height: 24,
                                 width: 24,
@@ -121,10 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text('Belum punya akun? '),
                     GestureDetector(
-                      onTap:
-                          () => Get.toNamed(
-                            AppRoute.register.name,
-                          ), // Navigasi ke halaman register
+                      onTap: () => Get.toNamed(AppRoute.register.name),
                       child: const Text(
                         'Daftar disini',
                         style: TextStyle(

@@ -26,8 +26,7 @@ class UserModel {
 
   // Method untuk mengubah instance UserModel menjadi Map (JSON)
   Map<String, dynamic> toJson() => {
-        // ==== PERBAIKAN UTAMA DI SINI ====
-        // Sekarang kita juga menyimpan ID ke dalam JSON
+        // Menyimpan ID ke dalam JSON
         '\$id': id, 
         'name': name,
         'email': email,

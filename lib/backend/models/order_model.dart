@@ -13,7 +13,7 @@ class OrderModel {
   final double totalPrice;
   final double taxAmount;
   final String status;
-  // <-- PERUBAHAN: dari String? photoId menjadi List<String>? photoIds
+
   final List<String>? photoIds;
 
   OrderModel({
@@ -29,7 +29,7 @@ class OrderModel {
     required this.totalPrice,
     required this.taxAmount,
     required this.status,
-    this.photoIds, // <-- PERUBAHAN
+    this.photoIds, 
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
@@ -46,7 +46,7 @@ class OrderModel {
       totalPrice: (json['totalPrice'] ?? 0.0).toDouble(),
       taxAmount: (json['taxAmount'] ?? 0.0).toDouble(),
       status: json['status'],
-      // <-- PERUBAHAN: Mengonversi List<dynamic> dari JSON menjadi List<String>
+      
       photoIds: json['photoIds'] != null ? List<String>.from(json['photoIds']) : null,
     );
   }

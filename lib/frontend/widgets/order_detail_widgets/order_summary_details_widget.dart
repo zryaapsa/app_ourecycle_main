@@ -19,7 +19,7 @@ class OrderSummaryDetailsWidget extends StatelessWidget {
     required this.waktuValue,
     required this.tanggalLabel,
     required this.tanggalValue,
-    this.pajakLabel = "Pajak 11%",
+    this.pajakLabel = "Biaya Aplikasi",
     required this.pajakValue,
     this.totalLabel = "Total",
     required this.totalValue,

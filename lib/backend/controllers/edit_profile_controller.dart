@@ -11,6 +11,7 @@ class EditProfileController extends GetxController {
   final addressController = TextEditingController();
 
   final isLoading = false.obs;
+  final profileImageUrl = ''.obs;
 
   @override
   void onInit() {
@@ -144,6 +145,10 @@ class EditProfileController extends GetxController {
       isLoading.value = false;
       Get.snackbar('Gagal Menyimpan', 'Terjadi kesalahan: $e');
     }
+  }
+
+  void updateProfileImage(String url) {
+    profileImageUrl.value = url;
   }
 
   @override

@@ -95,8 +95,14 @@ class ProductInfoSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          _buildCategoryRadio(OrderCategory.pickOff, "PickOff"),
-          _buildCategoryRadio(OrderCategory.dropOff, "DropOff"),
+          _buildCategoryRadio(
+            OrderCategory.pickOff,
+            "Pick-Off (Sampah dijemput petugas)",
+          ),
+          _buildCategoryRadio(
+            OrderCategory.dropOff,
+            "Drop-Off (Sampah diantar sendiri)",
+          ),
         ],
       ),
     );

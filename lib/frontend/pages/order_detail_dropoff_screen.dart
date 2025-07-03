@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -321,7 +322,9 @@ class OrderDetailDropOffScreen extends StatelessWidget {
                               "Gagal memuat lokasi atau tidak ada lokasi tersedia.",
                             );
                           }
-                          return DropdownButtonFormField<DropOffLocationModel>(
+                          // Tambahkan dependency: dropdown_button2: ^2.3.9
+
+                          return DropdownButtonFormField2<DropOffLocationModel>(
                             value: controller.selectedLocation.value,
                             hint: Text(
                               "Pilih Lokasi Tujuan",
@@ -369,6 +372,29 @@ class OrderDetailDropOffScreen extends StatelessWidget {
                                   width: 2.0,
                                 ),
                               ),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 200,
+                              width:
+                                  MediaQuery.of(context).size.width -
+                                  32, // Lebar dropdown dengan margin
+                              padding: null,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                              ),
+                              elevation: 8,
+                              offset: const Offset(0, -5), // Posisi dropdown
+                              scrollbarTheme: ScrollbarThemeData(
+                                radius: const Radius.circular(40),
+                                thickness: MaterialStateProperty.all<double>(6),
+                                thumbVisibility:
+                                    MaterialStateProperty.all<bool>(true),
+                              ),
+                            ),
+                            menuItemStyleData: const MenuItemStyleData(
+                              height: 50,
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
                             ),
                           );
                         }),

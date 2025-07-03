@@ -46,10 +46,25 @@ class LoginController extends GetxController {
     result.fold(
       (errorMessage) {
         Get.snackbar(
-          'Login Gagal',
+          'Error',
           errorMessage,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: const Color(0xFFFFE5E5), // merah pastel
+          colorText: Colors.red.shade900,
+          snackStyle: SnackStyle.FLOATING,
+          margin: const EdgeInsets.only(top: 20, left: 16, right: 16),
+          borderRadius: 12,
+          borderWidth: 1,
+          borderColor: Colors.red.shade200,
+          boxShadows: [
+            BoxShadow(
+              color: Colors.red.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
+          duration: const Duration(seconds: 3),
+          icon: Icon(Icons.error_outline, color: Colors.red.shade900),
         );
       },
       (user) async {

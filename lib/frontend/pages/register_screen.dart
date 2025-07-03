@@ -38,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Image.asset('assets/ourecycle-logo.png', height: 100),
                 const SizedBox(height: 20),
                 const Text(
-                  'Silakan buat akun dahulu',
+                  'Silakan buat akun anda',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
@@ -61,25 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                TextFieldRegister(
-                  controller:
-                      controller.phoneController, // Hubungkan controller
-                  hintText: 'Nomor Telepon',
-                  keyboardType: TextInputType.phone,
-                  prefixIcon: Icons.phone_outlined,
-                  cursorColor: Colors.green,
-                ),
-                const SizedBox(height: 16),
-
-                TextFieldRegister(
-                  controller:
-                      controller.addressController, // Hubungkan controller
-                  hintText: 'Alamat',
-                  prefixIcon: Icons.home_outlined,
-                  cursorColor: Colors.green,
-                ),
-                const SizedBox(height: 16),
-
+                // Password
                 TextFieldRegister(
                   controller:
                       controller.passwordController, // Hubungkan controller
@@ -96,6 +78,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   cursorColor: Colors.green,
                 ),
+
+                const SizedBox(height: 16),
+
+                // Confirm Password
+                TextFieldRegister(
+                  controller:
+                      controller.passwordController, // Hubungkan controller
+                  hintText: 'Confirm Password',
+                  obscureText: _obscurePassword,
+                  prefixIcon: Icons.lock_outline,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                    ),
+                    onPressed: _togglePasswordVisibility,
+                  ),
+                  cursorColor: Colors.green,
+                ),
+
                 const SizedBox(height: 30),
 
                 // Dengarkan perubahan pada isLoading menggunakan Obx

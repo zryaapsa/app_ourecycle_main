@@ -33,18 +33,28 @@ class DeliveryInfoWidget extends StatelessWidget {
         const SizedBox(height: 12),
         CustomFormField(
           controller: phoneController,
-          labelText: phoneLabel,
+          labelText: "Nomor Telepon",
           hintText: phoneHint,
           keyboardType: TextInputType.phone,
           cursorColor: Colors.green,
+          labelRightButtonText: "Gunakan dari Profil",
+          onLabelRightButtonPressed: () {
+            // backend nanti disini
+          },
         ),
-        const SizedBox(height: 12),
+
+        const SizedBox(height: 20),
+
         CustomFormField(
           controller: addressController,
-          labelText: addressLabel,
+          labelText: "Alamat",
           hintText: addressHint,
           maxLines: 3,
           cursorColor: Colors.green,
+          labelRightButtonText: "Gunakan dari Profil",
+          onLabelRightButtonPressed: () {
+            // backend nanti
+          },
         ),
       ],
     );

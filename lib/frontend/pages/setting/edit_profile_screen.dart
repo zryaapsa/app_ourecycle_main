@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app_ourecycle_main/backend/controllers/edit_profile_controller.dart';
+import 'package:app_ourecycle_main/frontend/pages/setting/ubah_password_screen.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
@@ -35,6 +36,67 @@ class EditProfileScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
+              // --- Edit Foto Profile ---
+              Center(
+                child: Stack(
+                  children: [
+                    Obx(() {
+                      final imageUrl = controller.profileImageUrl.value;
+                      return CircleAvatar(
+                        radius: 48,
+                        backgroundColor: Colors.green.shade100,
+                        backgroundImage:
+                            imageUrl != null && imageUrl.isNotEmpty
+                                ? NetworkImage(imageUrl)
+                                : null,
+                        child:
+                            (imageUrl == null || imageUrl.isEmpty)
+                                ? Text(
+                                  controller.nameController.text.isNotEmpty
+                                      ? controller.nameController.text[0]
+                                          .toUpperCase()
+                                      : '?',
+                                  style: const TextStyle(
+                                    fontSize: 36,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                                : null,
+                      );
+                    }),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () async {
+                          // Implementasi pilih foto (image picker)
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.green.shade700,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
               // --- Field Nama ---
               _buildTextField(
                 context: context,
@@ -74,6 +136,45 @@ class EditProfileScreen extends StatelessWidget {
                         .multiline, // Agar interaktif menyesuaikan valuenya
               ),
               const SizedBox(height: 40),
+
+              // --- Tombol Ubah Password ---
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  label: const Text(
+                    'Ubah Password',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    side: BorderSide(color: Colors.green.shade400, width: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    foregroundColor: Colors.green,
+                  ).copyWith(
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>((
+                      states,
+                    ) {
+                      if (states.contains(MaterialState.pressed) ||
+                          states.contains(MaterialState.hovered)) {
+                        return Colors.green.withOpacity(0.08);
+                      }
+                      return null;
+                    }),
+                  ),
+                  onPressed: () {
+                    // Navigasi ke halaman ubah password atau tampilkan dialog
+                    Get.to(() => UbahPasswordScreen());
+                  },
+                ),
+              ),
+              const SizedBox(height: 18),
 
               // --- Tombol Simpan ---
               SizedBox(

@@ -10,6 +10,8 @@ class CustomFormField extends StatelessWidget {
   final bool readOnly;
   final IconData? suffixIcon; // Tambahkan jika ingin ada ikon di kanan
   final Color? cursorColor; // Jadikan opsional dan nullable
+  final String? labelRightButtonText;
+  final VoidCallback? onLabelRightButtonPressed;
 
   const CustomFormField({
     super.key,
@@ -22,6 +24,8 @@ class CustomFormField extends StatelessWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.cursorColor, // opsional
+    this.labelRightButtonText,
+    this.onLabelRightButtonPressed,
   });
 
   @override
@@ -30,15 +34,47 @@ class CustomFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (labelText != null) ...[
-          Text(
-            labelText!,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.green.shade700, // Warna label hijau dari desain
-              fontWeight: FontWeight.w500,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                labelText!,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              if (labelRightButtonText != null &&
+                  onLabelRightButtonPressed != null)
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 6,
+                    ),
+                    backgroundColor: Colors.green.shade400,
+                    foregroundColor: Colors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    shadowColor: Colors.green.shade100,
+                  ),
+                  onPressed:
+                      onLabelRightButtonPressed, // Fungsi buat manggil label klik
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        labelRightButtonText!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 12),
         ],
         TextFormField(
           controller: controller,

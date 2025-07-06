@@ -4,7 +4,7 @@
 <!-- Izin status jaringan (wifi, data, dll)-->
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
-        android:label="app_ourecycle_main"
+        android:label="Ourecycle"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

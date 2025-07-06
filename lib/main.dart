@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
    
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      
       theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
       logWriterCallback: (String text, {bool isError = false}) {
         print("GETX LOG: $text");

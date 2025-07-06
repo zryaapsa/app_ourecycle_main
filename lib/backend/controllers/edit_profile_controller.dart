@@ -28,7 +28,7 @@ class EditProfileController extends GetxController {
     }
 
     try {
-      // --- PERBAIKAN 1: Menggunakan nama fungsi yang benar ---
+      //  Perbaikan nama fungsi yang benar ---
       final profileData = await UserDatasource.getUserProfile(sessionUser.id!);
 
       nameController.text = profileData['name'] ?? '';
@@ -62,7 +62,7 @@ class EditProfileController extends GetxController {
       return;
     }
 
-    // --- PERBAIKAN 2: Menggunakan try-catch karena fungsi tidak mengembalikan Either ---
+    // Menggunakan try-catch karena fungsi tidak mengembalikan Either ---
     try {
       // Panggil fungsi update
       await UserDatasource.updateUserProfile(

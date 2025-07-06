@@ -35,8 +35,10 @@ migrate_working_dir/
 
 # Symbolication related
 app.*.symbols
-
+# Environment variables
+.env
 # Obfuscation related
+
 app.*.map.json
 
 # Android Studio will place build artifacts here

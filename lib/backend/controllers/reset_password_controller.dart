@@ -39,8 +39,6 @@ class ResetPasswordController extends GetxController {
 
     isLoading.value = true;
     try {
-      // --- PERBAIKAN DI SINI ---
-      // Hapus parameter 'passwordAgain'
       await Appwrite.account.updateRecovery(
         userId: userId,
         secret: secret,

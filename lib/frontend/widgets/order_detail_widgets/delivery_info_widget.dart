@@ -35,7 +35,7 @@ class DeliveryInfoWidget extends StatelessWidget {
           keyboardType: TextInputType.phone,
           labelRightButtonText: "Gunakan dari Profil",
           // Panggil fungsi fillFromProfile saat tombol ditekan
-          onLabelRightButtonPressed: () => controller.nofillFromProfile(),
+          onLabelRightButtonPressed: () => controller.noUserFill(),
         ),
         const SizedBox(height: 20),
         CustomFormField(
@@ -45,7 +45,7 @@ class DeliveryInfoWidget extends StatelessWidget {
           maxLines: 3,
           labelRightButtonText: "Gunakan dari Profil",
           // Panggil fungsi yang sama untuk mengisi alamat
-          onLabelRightButtonPressed: () => controller.addressfillFromProfile(),
+          onLabelRightButtonPressed: () => controller.addressUserFill(),
         ),
       ],
     );

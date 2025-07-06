@@ -1,3 +1,4 @@
+import 'package:app_ourecycle_main/backend/config/snackbar.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -147,32 +148,35 @@ class OrderController extends GetxController {
     return imageIds;
   }
 
-  void nofillFromProfile() async {
-    // Ambil data pengguna dari sesi lokal
+// FUNGSI BARU YANG DISATUKAN DAN DIPERBAIKI
+  void noUserFill() async {
     UserModel? currentUser = await SessionService.getUser();
     if (currentUser != null) {
-      // Isi text controller dengan data dari profil
-      phoneController.text = currentUser.phone ?? '';
-      
-      Get.snackbar('Info', 'Data No.Telp telah diisi dari profil Anda.');
+      if ((currentUser.phone ?? '').isNotEmpty) {
+        phoneController.text = currentUser.phone!;
+        
+        AppSnackbar.showSuccess(title: 'Info', message: 'Data No. Telp diisi dari profil Anda.');
+      } else {
+        AppSnackbar.showError(title: 'Info', message: 'Data No. Telp di profil Anda masih kosong.');
+      }
     } else {
-      Get.snackbar('Error', 'No.Telp belum diisi.');
+      AppSnackbar.showError(title: 'Error', message: 'Data profil tidak ditemukan.');
     }
   }
-  void addressfillFromProfile() async {
-    // Ambil data pengguna dari sesi lokal
+  void addressUserFill() async {
     UserModel? currentUser = await SessionService.getUser();
     if (currentUser != null) {
-      // Isi text controller dengan data dari profil
-      
-      addressController.text = currentUser.address ?? '';
-      Get.snackbar('Info', 'Data Alamat telah diisi dari profil Anda.');
+      if ((currentUser.address ?? '').isNotEmpty) {
+        
+        addressController.text = currentUser.address!;
+        AppSnackbar.showSuccess(title: 'Info', message: 'Data Alamat telah diisi dari profil Anda.');
+      } else {
+        AppSnackbar.showError(title: 'Info', message: 'Data Alamat di profil Anda masih kosong.');
+      }
     } else {
-      Get.snackbar('Error', 'Alamat belum diisi.');
+      AppSnackbar.showError(title: 'Error', message: 'Data profil tidak ditemukan.');
     }
   }
-
-
   void processOrder(
     BuildContext context, {
     required String wasteCategoryName,

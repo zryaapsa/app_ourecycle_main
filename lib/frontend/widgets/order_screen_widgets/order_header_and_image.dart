@@ -60,7 +60,7 @@ class OrderHeaderAndImage extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.only(top: 16.0),
                       child: Text(
-                        "Order Menu",
+                        "Detail Menu",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,

@@ -25,7 +25,7 @@ class SettingScreen extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.fromLTRB(16, 20, 16, 40),
               child: Text(
-                'Settings',
+                'Setting',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

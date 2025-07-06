@@ -55,7 +55,7 @@ class ProductInfoSection extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            "About",
+            "Tentang",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,

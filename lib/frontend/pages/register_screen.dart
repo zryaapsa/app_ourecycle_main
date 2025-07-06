@@ -1,10 +1,9 @@
-// frontend/pages/register_screen.dart
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Impor GetX
-import 'package:app_ourecycle_main/backend/controllers/register_controller.dart'; // Impor controller kita
-import 'package:app_ourecycle_main/frontend/widgets/text_field_register.dart';
+import 'package:app_ourecycle_main/backend/controllers/register_controller.dart';
 import 'package:app_ourecycle_main/frontend/pages/login_screen.dart';
+import 'package:app_ourecycle_main/frontend/widgets/text_field_register.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,13 +13,19 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  // Inisialisasi controller menggunakan GetX
   final controller = Get.put(RegisterController());
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   void _togglePasswordVisibility() {
     setState(() {
       _obscurePassword = !_obscurePassword;
+    });
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    setState(() {
+      _obscureConfirmPassword = !_obscureConfirmPassword;
     });
   }
 
@@ -37,106 +42,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 Image.asset('assets/ourecycle-logo.png', height: 100),
                 const SizedBox(height: 20),
-                const Text(
-                  'Silakan buat akun anda',
-                  textAlign: TextAlign.center,
-                ),
+                const Text('Silakan buat akun anda', textAlign: TextAlign.center),
                 const SizedBox(height: 30),
 
                 TextFieldRegister(
-                  controller: controller.nameController, // Hubungkan controller
+                  controller: controller.nameController,
                   hintText: 'Nama Lengkap',
                   prefixIcon: Icons.person_outline,
-                  cursorColor: Colors.green,
                 ),
                 const SizedBox(height: 16),
 
                 TextFieldRegister(
-                  controller:
-                      controller.emailController, // Hubungkan controller
+                  controller: controller.emailController,
                   hintText: 'Email',
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Icons.email_outlined,
-                  cursorColor: Colors.green,
                 ),
                 const SizedBox(height: 16),
 
-                // Password
                 TextFieldRegister(
-                  controller:
-                      controller.passwordController, // Hubungkan controller
+                  controller: controller.passwordController,
                   hintText: 'Password',
                   obscureText: _obscurePassword,
                   prefixIcon: Icons.lock_outline,
                   suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                    ),
+                    icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined),
                     onPressed: _togglePasswordVisibility,
                   ),
-                  cursorColor: Colors.green,
                 ),
-
                 const SizedBox(height: 16),
 
-                // Confirm Password
                 TextFieldRegister(
-                  controller:
-                      controller.passwordController, // Hubungkan controller
-                  hintText: 'Confirm Password',
-                  obscureText: _obscurePassword,
+                  controller: controller.confirmPasswordController, // <-- PERBAIKAN DI SINI
+                  hintText: 'Konfirmasi Password',
+                  obscureText: _obscureConfirmPassword,
                   prefixIcon: Icons.lock_outline,
                   suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                    ),
-                    onPressed: _togglePasswordVisibility,
+                    icon: Icon(_obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                    onPressed: _toggleConfirmPasswordVisibility,
                   ),
-                  cursorColor: Colors.green,
                 ),
-
                 const SizedBox(height: 30),
 
-                // Dengarkan perubahan pada isLoading menggunakan Obx
                 Obx(() {
                   return SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed:
-                          controller.isLoading
-                              ? null // Nonaktifkan tombol saat loading
-                              : () => controller.execute(
-                                context,
-                              ), // Panggil fungsi execute dari controller
+                      onPressed: controller.isLoading ? null : () => controller.execute(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      child:
-                          controller.isLoading
-                              ? const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 3,
-                                ),
-                              )
-                              : const Text(
-                                'Daftar',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                      child: controller.isLoading
+                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3))
+                          : const Text('Daftar', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                     ),
                   );
                 }),
@@ -148,15 +108,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const Text('Sudah punya akun? '),
                     GestureDetector(
                       onTap: () {
-                        Get.offAll(() => LoginScreen());
+                        Get.off(() => const LoginScreen());
                       },
-                      child: const Text(
-                        'Masuk disini',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
-                      ),
+                      child: const Text('Masuk disini', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
                     ),
                   ],
                 ),

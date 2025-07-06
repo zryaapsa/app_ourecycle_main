@@ -304,11 +304,7 @@ class OrderDetailPickOffScreen extends StatelessWidget {
                         const SizedBox(height: 24),
                         DeliveryInfoWidget(
                           sectionTitle: 'Informasi Penjemputan',
-                          phoneLabel: 'Masukkan No.Telp',
-                          phoneHint: 'Masukkan No.Telp',
                           phoneController: controller.phoneController,
-                          addressLabel: 'Masukkan Alamat Lengkap',
-                          addressHint: 'Masukkan Alamat Lengkap',
                           addressController: controller.addressController,
                         ),
                         const SizedBox(height: 100),

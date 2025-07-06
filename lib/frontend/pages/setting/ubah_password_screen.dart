@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:app_ourecycle_main/backend/controllers/change_password_controller.dart';
 
 class UbahPasswordScreen extends StatefulWidget {
   const UbahPasswordScreen({super.key});
@@ -9,11 +10,10 @@ class UbahPasswordScreen extends StatefulWidget {
 }
 
 class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
-  final TextEditingController oldPasswordController = TextEditingController();
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  // Inisialisasi controller dari GetX
+  final controller = Get.put(ChangePasswordController());
 
+  // State lokal hanya untuk mengatur visibilitas password
   bool _obscureOld = true;
   bool _obscureNew = true;
   bool _obscureConfirm = true;
@@ -35,10 +35,23 @@ class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
         child: Column(
           children: [
             const SizedBox(height: 20),
+            // Kolom untuk Password Lama (Wajib)
+            _buildTextField(
+              context: context,
+              label: 'Password Lama',
+              controller: controller.oldPasswordController,
+              icon: Icons.lock_outline,
+              obscureText: _obscureOld,
+              onToggleVisibility: () {
+                setState(() => _obscureOld = !_obscureOld);
+              },
+            ),
+            const SizedBox(height: 20),
+            // Kolom untuk Password Baru
             _buildTextField(
               context: context,
               label: 'Password Baru',
-              controller: newPasswordController,
+              controller: controller.newPasswordController,
               icon: Icons.lock_open_outlined,
               obscureText: _obscureNew,
               onToggleVisibility: () {
@@ -46,10 +59,11 @@ class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
               },
             ),
             const SizedBox(height: 20),
+            // Kolom untuk Konfirmasi Password Baru
             _buildTextField(
               context: context,
               label: 'Konfirmasi Password Baru',
-              controller: confirmPasswordController,
+              controller: controller.confirmPasswordController,
               icon: Icons.lock_reset,
               obscureText: _obscureConfirm,
               onToggleVisibility: () {
@@ -57,35 +71,41 @@ class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
               },
             ),
             const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // TODO: Implementasi simpan password baru
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+            // Tombol Simpan yang terhubung dengan controller
+            Obx(() => SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: controller.isLoading.value ? null : () => controller.saveNewPassword(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: controller.isLoading.value
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
+                          )
+                        : const Text(
+                            'Simpan Password',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
-                ),
-                child: const Text(
-                  'Simpan Password',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+                )),
           ],
         ),
       ),
     );
   }
 
+  // Widget helper untuk membuat text field yang seragam sesuai desain Anda
   Widget _buildTextField({
     required BuildContext context,
     required String label,
@@ -108,7 +128,7 @@ class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
         cursorColor: Colors.green,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.green),
+          labelStyle: const TextStyle(color: Colors.green),
           prefixIcon: Icon(icon, color: Colors.grey.shade600),
           filled: false,
           contentPadding: const EdgeInsets.symmetric(

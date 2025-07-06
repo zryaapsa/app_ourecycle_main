@@ -9,8 +9,6 @@ class UserDatasource {
     required String name,
     required String email,
     required String password,
-    required String phone,
-    required String address,
   }) async {
     try {
       final user = await Appwrite.account.create(
@@ -27,8 +25,9 @@ class UserDatasource {
         data: {
           'name': name,
           'email': email,
-          'phone': phone,
-          'address': address,
+          // phone dan address dikosongkan, akan diisi nanti di profil
+          'phone': '',
+          'address': '',
         },
       );
 
@@ -90,21 +89,77 @@ class UserDatasource {
     return doc.data;
   }
 
-  // --- FUNGSI BARU UNTUK UPDATE PROFIL ---
-  static Future<void> updateUserProfile({
+   // --- FUNGSI UPDATE PROFIL (DIPERBAIKI) ---
+  static Future<Either<String, UserModel>> updateUserProfile({
     required String userId,
     required String name,
     required String phone,
     required String address,
   }) async {
-    // Update nama di sistem Auth Appwrite
-    await Appwrite.account.updateName(name: name);
-    // Update data di database Users
-    await Appwrite.databases.updateDocument(
-      databaseId: Appwrite.databaseId,
-      collectionId: Appwrite.collectionUsers,
-      documentId: userId,
-      data: {'name': name, 'phone': phone, 'address': address},
-    );
+    try {
+      // 1. Update dokumen di database
+      final response = await Appwrite.databases.updateDocument(
+        databaseId: Appwrite.databaseId,
+        collectionId: Appwrite.collectionUsers,
+        documentId: userId,
+        data: {
+          'name': name,
+          'phone': phone,
+          'address': address,
+        },
+      );
+      // 2. Update nama di sistem Auth Appwrite agar sinkron
+      await Appwrite.account.updateName(name: name);
+      // 3. Kembalikan data baru dalam bentuk UserModel
+      return Right(UserModel.fromJson(response.data));
+    } on AppwriteException catch (e) {
+      return Left(e.message ?? 'Gagal memperbarui profil.');
+    } catch (e) {
+      return Left('Terjadi kesalahan: $e');
+    }
+  }
+
+  // --- FUNGSI BARU UNTUK UPDATE PASSWORD ---
+  static Future<Either<String, void>> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      await Appwrite.account.updatePassword(
+        password: newPassword,
+        oldPassword: oldPassword,
+      );
+      return const Right(null); // Tidak perlu mengembalikan data, cukup sinyal sukses
+    } on AppwriteException catch (e) {
+      // Pesan error spesifik untuk password salah
+      if (e.code == 401 && e.message!.contains('Invalid `oldPassword`')) {
+        return const Left('Password lama yang Anda masukkan salah.');
+      }
+      return Left(e.message ?? 'Gagal mengubah password.');
+    } catch (e) {
+      return Left('Terjadi kesalahan: $e');
+    }
+  }
+  // ... (import dan fungsi lain tidak berubah)
+  // ... (fungsi signUp, signIn, updateUserProfile, dll.)
+
+  // FUNGSI BARU UNTUK LUPA PASSWORD
+  static Future<Either<String, void>> createPasswordRecovery(String email) async {
+    try {
+      // URL ini harus Anda konfigurasikan di dashboard Appwrite
+      // Arahkan ke halaman di aplikasi/website Anda untuk reset password
+      // Untuk development, bisa gunakan URL placeholder
+      const String recoveryUrl = 'http://localhost/reset-password';
+
+      await Appwrite.account.createRecovery(
+        email: email,
+        url: recoveryUrl,
+      );
+      return const Right(null); // Sukses
+    } on AppwriteException catch (e) {
+      return Left(e.message ?? 'Gagal mengirim email pemulihan.');
+    } catch (e) {
+      return Left('Terjadi kesalahan: $e');
+    }
   }
 }

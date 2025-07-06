@@ -147,6 +147,32 @@ class OrderController extends GetxController {
     return imageIds;
   }
 
+  void nofillFromProfile() async {
+    // Ambil data pengguna dari sesi lokal
+    UserModel? currentUser = await SessionService.getUser();
+    if (currentUser != null) {
+      // Isi text controller dengan data dari profil
+      phoneController.text = currentUser.phone ?? '';
+      
+      Get.snackbar('Info', 'Data No.Telp telah diisi dari profil Anda.');
+    } else {
+      Get.snackbar('Error', 'No.Telp belum diisi.');
+    }
+  }
+  void addressfillFromProfile() async {
+    // Ambil data pengguna dari sesi lokal
+    UserModel? currentUser = await SessionService.getUser();
+    if (currentUser != null) {
+      // Isi text controller dengan data dari profil
+      
+      addressController.text = currentUser.address ?? '';
+      Get.snackbar('Info', 'Data Alamat telah diisi dari profil Anda.');
+    } else {
+      Get.snackbar('Error', 'Alamat belum diisi.');
+    }
+  }
+
+
   void processOrder(
     BuildContext context, {
     required String wasteCategoryName,

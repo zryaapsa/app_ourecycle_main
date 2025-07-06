@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart'; // Impor GetX
+import 'package:app_ourecycle_main/backend/controllers/order_controller.dart'; // Impor controller
 import 'custom_form_field.dart';
 
 class DeliveryInfoWidget extends StatelessWidget {
   final String sectionTitle;
-  final String phoneLabel;
-  final String phoneHint;
   final TextEditingController phoneController;
-  final String addressLabel;
-  final String addressHint;
   final TextEditingController addressController;
 
   const DeliveryInfoWidget({
     super.key,
     required this.sectionTitle,
-    required this.phoneLabel,
-    required this.phoneHint,
     required this.phoneController,
-    required this.addressLabel,
-    required this.addressHint,
     required this.addressController,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Cari controller yang sudah ada di memori
+    final OrderController controller = Get.find<OrderController>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,27 +31,21 @@ class DeliveryInfoWidget extends StatelessWidget {
         CustomFormField(
           controller: phoneController,
           labelText: "Nomor Telepon",
-          hintText: phoneHint,
+          hintText: "Masukkan No. Telp",
           keyboardType: TextInputType.phone,
-          cursorColor: Colors.green,
           labelRightButtonText: "Gunakan dari Profil",
-          onLabelRightButtonPressed: () {
-            // backend nanti disini
-          },
+          // Panggil fungsi fillFromProfile saat tombol ditekan
+          onLabelRightButtonPressed: () => controller.nofillFromProfile(),
         ),
-
         const SizedBox(height: 20),
-
         CustomFormField(
           controller: addressController,
           labelText: "Alamat",
-          hintText: addressHint,
+          hintText: "Masukkan Alamat Lengkap",
           maxLines: 3,
-          cursorColor: Colors.green,
           labelRightButtonText: "Gunakan dari Profil",
-          onLabelRightButtonPressed: () {
-            // backend nanti
-          },
+          // Panggil fungsi yang sama untuk mengisi alamat
+          onLabelRightButtonPressed: () => controller.addressfillFromProfile(),
         ),
       ],
     );
